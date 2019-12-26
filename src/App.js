@@ -1,25 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Route} from "react-router-dom";
+
+import Navbar from "./components/navbar.component"
+import SpacesList from "./components/spaces-list.component";
+import EditSpace from "./components/edit-space.component";
+import CreateSpace from "./components/create-space.component";
+import CreateUser from "./components/create-user.component";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="container">
+      <Navbar />
+      <br/>
+      <Route path="/" exact component={SpacesList} />
+      <Route path="/edit/:id" component={EditSpace} />
+      <Route path="/create" component={CreateSpace} />
+      <Route path="/user" component={CreateUser} />
+      </div>
+    </Router>
   );
 }
 
