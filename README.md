@@ -1,6 +1,6 @@
 ## Instructions for Local Dev
 
-In the my-app directory, run:
+In the top directory, run:
 
 ### `npm update`
 ### `npm install express cors mongoose dotenv`
@@ -14,7 +14,7 @@ Then start the server; go into the backend folder and run:
 
 ### `nodemon server`
 
-Finally, go back up into the my-app directory and run: 
+Finally, go back up into the boxeweb directory and run: 
 
 ### `npm start`
 
