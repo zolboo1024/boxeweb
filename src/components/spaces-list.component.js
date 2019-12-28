@@ -8,7 +8,6 @@ const Space = props => (
     <td>{props.space.username}</td>
     <td>{props.space.description}</td>
     <td>{props.space.location}</td>
-    <td>{props.space.date.substring(0,10)}</td>
     <td>
       <Link to={"/edit/"+props.space._id}>edit</Link> | <a href="#" onClick={() => { props.deleteSpace(props.space._id) }}>delete</a>
     </td>
@@ -59,7 +58,6 @@ export default class SpacesList extends Component {
               <th>Username</th>
               <th>Description</th>
               <th>Location</th>
-              <th>Date</th>
               <th>Actions</th>
             </tr>
           </thead>

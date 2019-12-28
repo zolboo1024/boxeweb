@@ -3,7 +3,6 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 require('dotenv').config(); //configures so that we can have our environment
 //variables in our dotenv files. In this case, this connects with our .env file in the
 //same folder.
@@ -20,20 +19,23 @@ const uri = process.env.ATLAS_URI; //uri is where our database is stored.
 console.log("GOT URL: ", uri);
 
 
-mongoose.connect(uri, {useNewUrlParse: true, useCreateIndex:true});
+mongoose.connect(uri, {useNewUrlParse: true, useCreateIndex:true, useUnifiedTopology: true});
 const connection = mongoose.connection; //save it in a different variable
+//mongoose is how the database is connected to our application.
 connection.once('open', ()=> {
   console.log("MongoDB database has been connected") //log it if it's successful
 });
 
+
 const spacesRouter = require('./routes/spaces'); //basically import the spaces file.
 const usersRouter = require('./routes/users');
-
+const loginRouter = require('./routes/login');
+//We don't really have a global route variable, we just specify it for each cases. As in this one.
 app.use('/spaces',spacesRouter);//.use function so that the app can use it. Whenever
 //a user goes to the website slash /spaces, it will load everything in the router
 //that is specified. i.e. /routes/spaces.js
 app.use('/users',usersRouter);
-
+app.use('/login',loginRouter);
 //nodemon allows us to start a server and it also has hot-reload
 app.listen(port, ()=> {
   console.log('Server is running on port: '+port);

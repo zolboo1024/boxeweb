@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from 'react-datepicker';
+// import "react-datepicker/dist/react-datepicker.css";
 
 export default class CreateSpace extends Component {
   constructor(props) {
@@ -10,14 +10,12 @@ export default class CreateSpace extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeLocation = this.onChangeLocation.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       username: '',
       description: '',
       location: '',
-      date: new Date(),
       users: []
     }
   }
@@ -56,12 +54,6 @@ export default class CreateSpace extends Component {
     })
   }
 
-  onChangeDate(date) {
-    this.setState({
-      date: date
-    })
-  }
-
   onSubmit(e) {
     e.preventDefault();
 
@@ -69,7 +61,6 @@ export default class CreateSpace extends Component {
       username: this.state.username,
       description: this.state.description,
       location: this.state.location,
-      date: this.state.date
     }
 
     console.log(thisspace);
@@ -101,6 +92,7 @@ export default class CreateSpace extends Component {
                 })
               }
           </select>
+
         </div>
         <div className="form-group">
           <label>Description: </label>
@@ -120,16 +112,6 @@ export default class CreateSpace extends Component {
               onChange={this.onChangeLocation}
               />
         </div>
-        <div className="form-group">
-          <label>Date: </label>
-          <div>
-            <DatePicker
-              selected={this.state.date}
-              onChange={this.onChangeDate}
-            />
-          </div>
-        </div>
-
         <div className="form-group">
           <input type="submit" value="Create Space Log" className="btn btn-primary" />
         </div>

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from 'react-datepicker';
+// import "react-datepicker/dist/react-datepicker.css";
 
+//If it did use the same port a.k.a the same "url", then the calling
+//object would return the JSON but it wouldn;t really do anything but the
+//react part would just display whatever component is specified.
 export default class EditSpace extends Component {
   constructor(props) {
     super(props);
@@ -10,14 +13,12 @@ export default class EditSpace extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeLocation = this.onChangeLocation.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
       username: '',
       description: '',
       location: '',
-      date: new Date(),
       users: []
     }
   }
@@ -29,7 +30,6 @@ export default class EditSpace extends Component {
           username: response.data.username,
           description: response.data.description,
           location: response.data.location,
-          date: new Date(response.data.date)
         })
       })
       .catch(function (error) {
@@ -68,12 +68,6 @@ export default class EditSpace extends Component {
     })
   }
 
-  onChangeDate(date) {
-    this.setState({
-      date: date
-    })
-  }
-
   onSubmit(e) {
     e.preventDefault();
 
@@ -81,7 +75,6 @@ export default class EditSpace extends Component {
       username: this.state.username,
       description: this.state.description,
       location: this.state.location,
-      date: this.state.date
     }
 
     console.log(space);
@@ -131,15 +124,6 @@ export default class EditSpace extends Component {
               value={this.state.location}
               onChange={this.onChangeLocation}
               />
-        </div>
-        <div className="form-group">
-          <label>Date: </label>
-          <div>
-            <DatePicker
-              selected={this.state.date}
-              onChange={this.onChangeDate}
-            />
-          </div>
         </div>
 
         <div className="form-group">

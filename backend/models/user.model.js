@@ -14,6 +14,19 @@ const userSchema = new Schema({
     trim: true,
     minlenght: 3
   },//username variable in the userSchema
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  register_date: {
+    type: Date,
+    default: Date.now
+  }
 }, {
   timestamps: true//flags for the schema as the second argument to the Schema variable creation.
 });
