@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import RegisterModal from './auth/RegisterModal';
+import {
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  Container
+} from 'reactstrap';
 //The Link component is a pre-made component imported as a part of the router package.
 //So you can just specify "to" prop and then make the button.
 
@@ -10,7 +19,7 @@ import { Link } from 'react-router-dom';
 //But that can only happen in this case where the backend and the frotend are
 //running on different ports.
 //*If there are only one "port"(just a )
-export default class Navbar extends Component {
+export default class CustomNavbar extends Component {
 
   render() {
     return (
@@ -26,6 +35,9 @@ export default class Navbar extends Component {
           </li>
           <li className="navbar-item">
           <Link to="/user" className="nav-link">Create User</Link>
+          </li>
+          <li className="navbar-item">
+          <Link to="/register" className="nav-link">Register</Link>
           </li>
         </ul>
         </div>

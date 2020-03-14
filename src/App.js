@@ -7,13 +7,14 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 
 //*But how does it find where the paths are? Maybe router is a global
 //variable that is saved after every modification.
-import Navbar from "./components/navbar.component"
+import CustomNavbar from "./components/navbar.component"
 import SpacesList from "./components/spaces-list.component";
 import EditSpace from "./components/edit-space.component";
 import CreateSpace from "./components/create-space.component";
 import CreateUser from "./components/create-user.component";
 import {loadUser} from "./actions/authActions";//
-import store from './store'
+import store from './store';
+import RegisterModal from './components/auth/RegisterModal';
 
 class App extends Component {
   componentDidMount() {
@@ -23,12 +24,13 @@ class App extends Component {
     return (
       <Router>
         <div className="container">
-        <Navbar />
+        <CustomNavbar />
         <br/>
         <Route path="/" exact component={SpacesList} />
         <Route path="/edit/:id" component={EditSpace} />
         <Route path="/create" component={CreateSpace} />
         <Route path="/user" component={CreateUser} />
+        <Route path="/register" component={RegisterModal} />
         </div>
       </Router>
     );
