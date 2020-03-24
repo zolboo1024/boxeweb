@@ -6,7 +6,7 @@ const auth = require('../middleware/auth.middleware');
 //got exported from the specified directory or file.
 //Where do we specify if it's a get request or post request?
 //--After the router function call, we say get post or delete
-router.route('/').get(auth, (req,res)=> { //auth is the authorization middleware that we
+router.route('/').get((req,res)=> { //auth is the authorization middleware that we
   //created in the middleware folder. It checks if the user is valid.
   Space.find() //find function is basically connected to the database (it pulls
   //whatever is specified in front of the method call and then finds it
@@ -18,7 +18,7 @@ router.route('/').get(auth, (req,res)=> { //auth is the authorization middleware
 //the Space variable is used in 2 ways here. First, as a way to actually create
 //space and then to just straight up connect to the database and then "find"
 //method to be called on it.
-router.route('/add').post(auth, (req,res)=> { //we specify whether we are posting or getting
+router.route('/add').post((req,res)=> { //we specify whether we are posting or getting
   //after specifying which route to take.
   const username = req.body.username;
   const location = req.body.location;
@@ -39,7 +39,7 @@ router.route('/add').post(auth, (req,res)=> { //we specify whether we are postin
 //whatever is added after : is saved under the name specified. IN this case, the // ID
 // will be saved as id in the req params
 //This.functionThatReturnsThat().then(that => saveDate()) or something is how then works
-router.route('/:id').get(auth, (req,res)=> {
+router.route('/:id').get((req,res)=> {
   Space.findById(req.params.id)
   .then(space => res.json(space)) //but if it actually returns something useful,
   //it can be saved. Especially if it is a GET call, like it is specified here,
@@ -51,7 +51,7 @@ router.route('/:id').get(auth, (req,res)=> {
 //if the id is specified within the URL, then it is stored within the params
 //part of the req. If it is in the JSON, then it is in the body.
 //Json file: {{body}{params}}
-router.route('/:id').delete(auth, (req,res)=> {
+router.route('/:id').delete((req,res)=> {
   Space.findByIdAndDelete(req.params.id)
   .then(()=> res.json("Space deleted!")) //res is what is returned. If it returns a message, we
   //don't really care

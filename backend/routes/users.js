@@ -15,7 +15,6 @@ router.route('/').get((req, res) => { //if the route is called on its own with n
     .catch(err => res.status(400).json('Error: '+err));
 });
 
-router.route('/add').post((req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -51,7 +50,7 @@ router.route('/add').post((req, res) => {
                     { expiresIn: 3600},
                     (err, token) => { //jwt signs the user which creates the Token
                       //and then it saves the token in the header. see
-                      //how it says res.json({TOKEN, user}). 
+                      //how it says res.json({TOKEN, user}).
                       if(err) throw err;
                       res.json({
                         token,
