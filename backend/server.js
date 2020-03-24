@@ -16,12 +16,13 @@ app.use(express.json()); //allows us to parse json that our server receives and 
 const uri = process.env.ATLAS_URI; //uri is where our database is stored.
 //this is where we connect with our database. Get it from our .env file in this
 //same folder.
-console.log("GOT URL: ", uri);
 
-
-mongoose.connect(uri, {useNewUrlParse: true, useCreateIndex:true, useUnifiedTopology: true});
+mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true});
 const connection = mongoose.connection; //save it in a different variable
 //mongoose is how the database is connected to our application.
+connection.on('error', err=> {
+  console.log("Failed to connect to the database!");
+})
 connection.once('open', ()=> {
   console.log("MongoDB database has been connected") //log it if it's successful
 });
