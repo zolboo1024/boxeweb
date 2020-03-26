@@ -13,6 +13,7 @@ import EditSpace from "./components/edit-space.component";
 import CreateSpace from "./components/create-space.component";
 import CreateUser from "./components/create-user.component";
 import {loadUser} from "./actions/authActions";//
+import {Provider} from 'react-redux';
 import store from './store';
 import RegisterModal from './components/auth/RegisterModal';
 
@@ -22,6 +23,7 @@ class App extends Component {
   }
   render () {
     return (
+      <Provider store={store}>
       <Router>
         <div className="container">
         <CustomNavbar />
@@ -33,6 +35,7 @@ class App extends Component {
         <Route path="/register" component={RegisterModal} />
         </div>
       </Router>
+      </Provider>
     );
   }
 }

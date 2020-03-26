@@ -1,5 +1,7 @@
 import axios from 'axios';
 import {returnErrors} from './errorActions';
+import authReducer from '../reducers/authReducer';
+import errorReducer from '../reducers/errorReducer';
 import {
   USER_LOADED,
   USER_LOADING,
@@ -16,10 +18,13 @@ export const loadUser = () => (dispatch,getState) => {
   //User loading
   //Dispatch calls this action. Once it reaches the reducer,
   //it contains nothing in the payload. Just an empty file with a type
-  dispatch({ type: USER_LOADING });
+  var action = {
+    type: USER_LOADING
+  };
+  dispatch(action);
   //Once it gets the user, then it dispatches something that actually
   //contains something.
-  axios.get('/login/user', tokenConfig(getState))
+  axios.get('http://localhost:3000/login/user/', tokenConfig(getState))
     .then(res => dispatch({
       type: USER_LOADED,
       payload: res.data
@@ -31,7 +36,29 @@ export const loadUser = () => (dispatch,getState) => {
       });
     });
 };
-
+//Register a users
+export const register = ({username,email,password}) => (dispatch, getState) => {
+  const config = {
+    headers: {
+      'Content-Type' : 'application/json'
+    }
+  }
+  const body = JSON.stringify({username, email, password});
+  console.log(body)
+  axios.post('http://localhost:3000/users/', body, config)
+    .then(res=>{
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data
+      })
+      console.log("User created");
+    }).catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
+}
 //Setup config/headers and token
 export const tokenConfig = getState => {
   // Get token from localStorage
@@ -44,7 +71,7 @@ export const tokenConfig = getState => {
     }
   }
   //If we find the token, then it takes it and puts it in the
-  //config. Config is what is ultimately made into an HTTP request. 
+  //config. Config is what is ultimately made into an HTTP request.
   if(token) {
     config.headers['x-auth-token'] = token;
   }

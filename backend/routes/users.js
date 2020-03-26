@@ -20,7 +20,7 @@ router.route('/').post((req,res) => {
   const password = req.body.password;
 
   if(!username || !email || !password) {
-    return res.status(400).json("Please enter all fields!")
+    return res.status(400).json("Please enter all fields!!!!")
   }
   //We find the user with the specified email and if it already exists,
   //then we return an error but if not, we just return the user

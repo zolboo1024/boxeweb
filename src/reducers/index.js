@@ -5,7 +5,6 @@ import errorReducer from './errorReducer';
 import authReducer from './authReducer';
 import spaceReducer from './spaceReducer';
 export default combineReducers({
-  //item: itemReducer,
   error: errorReducer,
   auth: authReducer,
   space: spaceReducer
