@@ -14,7 +14,11 @@ import {
 // Check token & load user
 export const loadUser = () => (dispatch,getState) => {
   //User loading
+  //Dispatch calls this action. Once it reaches the reducer,
+  //it contains nothing in the payload. Just an empty file with a type
   dispatch({ type: USER_LOADING });
+  //Once it gets the user, then it dispatches something that actually
+  //contains something.
   axios.get('/login/user', tokenConfig(getState))
     .then(res => dispatch({
       type: USER_LOADED,
@@ -39,7 +43,8 @@ export const tokenConfig = getState => {
       "Content-type": "application"
     }
   }
-
+  //If we find the token, then it takes it and puts it in the
+  //config. Config is what is ultimately made into an HTTP request. 
   if(token) {
     config.headers['x-auth-token'] = token;
   }

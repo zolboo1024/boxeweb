@@ -18,7 +18,7 @@ router.route('/').get((req,res)=> { //auth is the authorization middleware that 
 //the Space variable is used in 2 ways here. First, as a way to actually create
 //space and then to just straight up connect to the database and then "find"
 //method to be called on it.
-router.route('/add').post((req,res)=> { //we specify whether we are posting or getting
+router.route('/add').post(auth, (req,res)=> { //we specify whether we are posting or getting
   //after specifying which route to take.
   const username = req.body.username;
   const location = req.body.location;
@@ -51,14 +51,14 @@ router.route('/:id').get((req,res)=> {
 //if the id is specified within the URL, then it is stored within the params
 //part of the req. If it is in the JSON, then it is in the body.
 //Json file: {{body}{params}}
-router.route('/:id').delete((req,res)=> {
+router.route('/:id').delete(auth, (req,res)=> {
   Space.findByIdAndDelete(req.params.id)
   .then(()=> res.json("Space deleted!")) //res is what is returned. If it returns a message, we
   //don't really care
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/update/:id').post((req,res)=> {
+router.route('/update/:id').post(auth, (req,res)=> {
   Space.findById(req.params.id)
     .then(spaceToUpdate => {
       spaceToUpdate.username= req.body.username;

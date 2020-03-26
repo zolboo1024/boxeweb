@@ -5,7 +5,8 @@ const initialState = {
   status: null,
   id: null
 }
-
+//Basically a complex type of state for React. Once the state changes, it updates.
+//And action includes what kind of changes are made.
 export default function(state = initialState, action) {
   switch(action.type) {
     case GET_ERRORS:

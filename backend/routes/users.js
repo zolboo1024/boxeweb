@@ -4,8 +4,8 @@ let User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const config = require('config'); //to not expose sensitive materials
 const jwt = require('jsonwebtoken');
-
-router.route('/').get((req, res) => { //if the route is called on its own with no
+const auth = require('../middleware/auth.middleware');
+router.route('/').get(auth,(req, res) => { //if the route is called on its own with no
   //other specifier, we "get"
   User.find()// we find it from the database. It searches the database according to the model.
     .then(users=> res.json(users)) //res is what is returned.
@@ -14,7 +14,7 @@ router.route('/').get((req, res) => { //if the route is called on its own with n
     //res.json(users) saves things in json format.
     .catch(err => res.status(400).json('Error: '+err));
 });
-
+router.route('/').post((req,res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
@@ -26,6 +26,7 @@ router.route('/').get((req, res) => { //if the route is called on its own with n
   //then we return an error but if not, we just return the user
   //*How does it know which variable in each of the data object to look for?
   //* in this case, how does it know to look for a user with the specified USERNAME?
+  User.findOne({username}).then(user => {if(user) return res.status(400).json('Username taken!')})
   User.findOne({email})
     .then(user => {
       if(user) return res.status(400).json("User already exists!");
@@ -70,5 +71,4 @@ router.route('/').get((req, res) => { //if the route is called on its own with n
       }
     }).catch(err => res.status(400).json('Error: '+err));
 });
-
 module.exports = router;  //a standard thing for router file. We're just exporting the router.

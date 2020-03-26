@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken');
 function auth(req,res,next) {
   const token = req.header('x-auth-token'); //here we are checking for the current token
   //and the saving it in the token variable
-  //there is a header called "x-auth-token" in the header of req. 
+  //there is a header called "x-auth-token" in the header of req.
   // Check for token i.e. if the token is valid
-  if(!token) res.status(401).json("No token, authorization denied");
+  if(!token) return res.status(401).json("No token, authorization denied");
 
   try {
 

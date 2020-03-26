@@ -3,9 +3,10 @@ import { combineReducers } from 'redux'; //a class that combines reducers.
 //import spaceReducer from './spaceReducer';
 import errorReducer from './errorReducer';
 import authReducer from './authReducer';
-
+import spaceReducer from './spaceReducer';
 export default combineReducers({
   //item: itemReducer,
   error: errorReducer,
-  auth: authReducer
+  auth: authReducer,
+  space: spaceReducer
 });
