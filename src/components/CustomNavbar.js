@@ -49,14 +49,22 @@ class CustomNavbar extends Component {
           <Link to="/logout" className="nav-link">Logout</Link>
           </li>)
           :
-          (<span>
+          (
           <li className="navbar-item">
           <Link to="/register" className="nav-link">Register</Link>
           </li>
+          )
+          }
+          {
+          this.props.isAuthenticated
+          ?
+          null
+          :
+          (
           <li className="navbar-item">
           <Link to="/login" className="nav-link">Login</Link>
           </li>
-          </span>)
+          )
           }
         </ul>
         </div>
