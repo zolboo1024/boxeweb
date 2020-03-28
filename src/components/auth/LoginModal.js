@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {tokenConfig} from '../../actions/authActions';
-import {register} from '../../actions/authActions';
+import {login} from '../../actions/authActions';
 import {connect} from 'react-redux';
 import store from '../../store';
 import {Alert} from 'reactstrap';
@@ -10,17 +10,15 @@ import PropTypes from 'prop-types';
 // import DatePicker from 'react-datepicker';
 // import "react-datepicker/dist/react-datepicker.css";
 
-class RegisterModal extends Component {
+class LoginModal extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      username: '',
       email: '',
       password: '',
       msg: ''
@@ -28,17 +26,11 @@ class RegisterModal extends Component {
   }
 
   componentDidMount() {
-    console.log("Component mounted");
     const {isAuthenticated} = this.props;
     if(isAuthenticated) {
       this.props.history.push('/')
-    }
-  }
-
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    })
+    };
+    console.log("Component mounted");
   }
 
   onChangeEmail(e) {
@@ -57,7 +49,6 @@ class RegisterModal extends Component {
     e.preventDefault();
 
     const thisUser = {
-      username: this.state.username,
       email: this.state.email,
       password: this.state.password,
     }
@@ -65,12 +56,12 @@ class RegisterModal extends Component {
     console.log(thisUser);
     //Attempt to create the user. If it is not created properly, we throw an
     //error and if it is, we save the token in a local storage.
-    store.dispatch(register(thisUser));
+    store.dispatch(login(thisUser));
   }
   static propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
-    register: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired
   };
   //When the component updates and the reducers throw an error, we save it in the component state.
@@ -80,7 +71,7 @@ class RegisterModal extends Component {
     const {error} = this.props;
     if(error != prevProps.error) {
       //Check for register error
-      if(error.id === 'REGISTER_FAIL') {
+      if(error.id === 'LOGIN_FAIL') {
         this.setState({msg: error.msg});
       } else {
         this.setState({msg: null});
@@ -95,19 +86,8 @@ class RegisterModal extends Component {
     return (
     <div>
       {this.state.msg ? (<Alert color = "danger">{this.state.msg}</Alert>) : null}
-      <h3>Register</h3>
+      <h3>Login</h3>
       <form onSubmit={this.onSubmit}>
-        <div className="form-group">
-          <label>Username: </label>
-          <input type="text"
-              required
-              name="usernam"
-              className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}>
-          </input>
-
-        </div>
         <div className="form-group">
           <label>Email: </label>
           <input  type="email"
@@ -129,7 +109,7 @@ class RegisterModal extends Component {
               />
         </div>
         <div className="form-group">
-          <input type="submit" value="Register" className="btn btn-primary" />
+          <input type="submit" value="Login" className="btn btn-primary" />
         </div>
       </form>
     </div>
@@ -145,5 +125,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {register, clearErrors}
-) (RegisterModal);
+  {login, clearErrors}
+) (LoginModal);

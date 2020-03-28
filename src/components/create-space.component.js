@@ -87,8 +87,7 @@ export default class CreateSpace extends Component {
                 this.state.users.map(function(user) {
                   return <option
                     key={user}
-                    value={user}>{user}
-                    </option>;
+                    value={user}>{user}</option>;
                 })
               }
           </select>

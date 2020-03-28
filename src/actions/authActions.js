@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {returnErrors} from './errorActions';
+import {clearErrors} from './errorActions';
 import authReducer from '../reducers/authReducer';
 import errorReducer from '../reducers/errorReducer';
 import {
@@ -9,6 +10,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
   REGISTER_SUCCESS,
   REGISTER_FAIL
 } from "./types";
@@ -25,10 +27,12 @@ export const loadUser = () => (dispatch,getState) => {
   //Once it gets the user, then it dispatches something that actually
   //contains something.
   axios.get('http://localhost:3000/login/user/', tokenConfig(getState))
-    .then(res => dispatch({
-      type: USER_LOADED,
-      payload: res.data
-    }))
+    .then(res => {
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data
+      });
+    })
     .catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({
@@ -50,12 +54,49 @@ export const register = ({username,email,password}) => (dispatch, getState) => {
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
-      })
-      console.log("User created");
+      });
+      dispatch(clearErrors());
     }).catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
       dispatch({
         type: REGISTER_FAIL
+      });
+    });
+}
+
+//Logs out a user
+export const logout = () => (dispatch, getState) => {
+  try{
+  dispatch({type: LOGOUT_SUCCESS})
+  }
+  catch(err){
+      dispatch(returnErrors('Could not log you out', '', 'LOGOUT_FAIL'));
+      dispatch({
+        type: LOGOUT_FAIL
+      });
+  }
+}
+
+//Logs in a user
+export const login = ({email,password}) => (dispatch, getState) => {
+  const config = {
+    headers: {
+      'Content-Type' : 'application/json'
+    }
+  }
+  const body = JSON.stringify({email, password});
+  console.log(body)
+  axios.post('http://localhost:3000/login/', body, config)
+    .then(res=>{
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.data
+      })
+      dispatch(clearErrors());
+    }).catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
+      dispatch({
+        type: LOGIN_FAIL
       });
     });
 }

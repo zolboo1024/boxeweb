@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import RegisterModal from './auth/RegisterModal';
+import {connect} from 'react-redux';
+import store from '../store';
+import PropTypes from 'prop-types';
+
 import {
   Navbar,
   NavbarToggler,
@@ -19,8 +23,13 @@ import {
 //But that can only happen in this case where the backend and the frotend are
 //running on different ports.
 //*If there are only one "port"(just a )
-export default class CustomNavbar extends Component {
-
+class CustomNavbar extends Component {
+  constructor(props) {
+    super(props);
+  }
+  static propTypes = {
+    isAuthenticated: PropTypes.bool
+  };
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -33,15 +42,34 @@ export default class CustomNavbar extends Component {
           <li className="navbar-item">
           <Link to="/create" className="nav-link">Create Space Log</Link>
           </li>
-          <li className="navbar-item">
-          <Link to="/user" className="nav-link">Create User</Link>
-          </li>
+          {
+          this.props.isAuthenticated
+          ?
+          (<li className="navbar-item">
+          <Link to="/logout" className="nav-link">Logout</Link>
+          </li>)
+          :
+          (<span>
           <li className="navbar-item">
           <Link to="/register" className="nav-link">Register</Link>
           </li>
+          <li className="navbar-item">
+          <Link to="/login" className="nav-link">Login</Link>
+          </li>
+          </span>)
+          }
         </ul>
         </div>
       </nav>
     );
   }
 }
+//MApping state to props means that these values are actually attacked to the
+//state of this component (REgistermodal).
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(
+  mapStateToProps
+) (CustomNavbar);

@@ -10,6 +10,7 @@ export const returnErrors = (msg,status, id=null) => {
 
 //Clear errors
 export const clearErrors = () => {
+  console.log("Clear errors called");
   return {
     type: CLEAR_ERRORS
   };
