@@ -1,4 +1,9 @@
+<<<<<<< HEAD:src/App.js
 import React, {Component} from 'react';
+=======
+import React from 'react';
+import "./App.css"
+>>>>>>> 954815359c384075d216ff1cee35fe33033cfb87:client/src/App.js
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 //We are using Router the same way we used router in the backend.
@@ -11,6 +16,7 @@ import CustomNavbar from "./components/CustomNavbar"
 import SpacesList from "./components/spaces-list.component";
 import EditSpace from "./components/edit-space.component";
 import CreateSpace from "./components/create-space.component";
+<<<<<<< HEAD:src/App.js
 import {loadUser} from "./actions/authActions";//
 import {Provider} from 'react-redux';
 import store from './store';
@@ -39,5 +45,23 @@ class App extends Component {
       </Provider>
     );
   }
+=======
+import CreateUser from "./components/create-user.component";
+
+function App() {
+  return (
+    <Router>
+      <div className="container">
+      <Navbar />
+      <Switch>
+            <Route path="/" exact component={SpacesList} />
+            <Route path="/edit/:id" component={EditSpace} />
+            <Route path="/create" component={CreateSpace} />
+            <Route path="/user" component={CreateUser} />
+        </Switch>
+      </div>
+    </Router>
+  );
+>>>>>>> 954815359c384075d216ff1cee35fe33033cfb87:client/src/App.js
 }
 export default App;
