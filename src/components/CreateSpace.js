@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import {tokenConfig} from '../actions/authActions';
+import {loadUser} from '../actions/authActions';
+import {connect} from 'react-redux';
+import store from '../store';
+import {tokenConfigJS} from './tokenConfig'
 // import DatePicker from 'react-datepicker';
 // import "react-datepicker/dist/react-datepicker.css";
 
-export default class CreateSpace extends Component {
+class CreateSpace extends Component {
   constructor(props) {
     super(props);
 
@@ -16,26 +21,8 @@ export default class CreateSpace extends Component {
       username: '',
       description: '',
       location: '',
-      users: []
     }
   }
-
-  componentDidMount() {
-    axios.get('http://localhost:3000/users/')
-      .then(response => {
-        if (response.data.length > 0) {
-          this.setState({
-            users: response.data.map(user => user.username),
-            username: response.data[0].username
-          })
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-
-  }
-
   onChangeUsername(e) {
     this.setState({
       username: e.target.value
@@ -58,17 +45,13 @@ export default class CreateSpace extends Component {
     e.preventDefault();
 
     const thisspace = {
-      username: this.state.username,
+      username: this.props.user.username,
       description: this.state.description,
       location: this.state.location,
     }
-
-    console.log(thisspace);
-
-    axios.post('http://localhost:3000/spaces/add', thisspace)
+    console.log(this.props.token);
+    axios.post('http://localhost:3000/spaces/add', thisspace, tokenConfigJS(this.props.token))
       .then(res => console.log(res.data));
-
-    window.location = '/';
   }
 
   render() {
@@ -76,23 +59,6 @@ export default class CreateSpace extends Component {
     <div>
       <h3>Create New Space</h3>
       <form onSubmit={this.onSubmit}>
-        <div className="form-group">
-          <label>Username: </label>
-          <select ref="userInput"
-              required
-              className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}>
-              {
-                this.state.users.map(function(user) {
-                  return <option
-                    key={user}
-                    value={user}>{user}</option>;
-                })
-              }
-          </select>
-
-        </div>
         <div className="form-group">
           <label>Description: </label>
           <input  type="text"
@@ -119,3 +85,14 @@ export default class CreateSpace extends Component {
     )
   }
 }
+//MApping state to props means that these values are actually attached to the
+//state of this component (REgistermodal).
+const mapStateToProps = state => ({
+  user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
+  token: state.auth.token
+});
+
+export default connect(
+  mapStateToProps,
+  {loadUser}) (CreateSpace);

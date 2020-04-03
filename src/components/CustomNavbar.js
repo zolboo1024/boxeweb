@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import RegisterModal from './auth/RegisterModal';
 import {connect} from 'react-redux';
 import store from '../store';
-import PropTypes from 'prop-types';
 
 import {
   Navbar,
@@ -27,9 +26,6 @@ class CustomNavbar extends Component {
   constructor(props) {
     super(props);
   }
-  static propTypes = {
-    isAuthenticated: PropTypes.bool
-  };
   render() {
     return (
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -39,9 +35,16 @@ class CustomNavbar extends Component {
           <li className="navbar-item">
           <Link to="/" className="nav-link">Spaces</Link>
           </li>
+          {
+          this.props.isAuthenticated?
+          (
           <li className="navbar-item">
           <Link to="/create" className="nav-link">Create Space Log</Link>
           </li>
+          )
+          :
+          null
+          }
           {
           this.props.isAuthenticated
           ?

@@ -1,12 +1,11 @@
 const router = require('express').Router();
 let Space = require('../models/space.model');
 const auth = require('../middleware/auth.middleware');
-
 //when you say require, it's basically just bringing in Whatever
 //got exported from the specified directory or file.
 //Where do we specify if it's a get request or post request?
 //--After the router function call, we say get post or delete
-router.route('/').get((req,res)=> { //auth is the authorization middleware that we
+router.route('/').get(auth,(req,res)=> { //auth is the authorization middleware that we
   //created in the middleware folder. It checks if the user is valid.
   Space.find() //find function is basically connected to the database (it pulls
   //whatever is specified in front of the method call and then finds it
@@ -30,7 +29,10 @@ router.route('/add').post(auth, (req,res)=> { //we specify whether we are postin
 
   newSpace.save()
     .then(spaces => res.json("Space Saved!"))
-    .catch(err=>res.status(400).json('Error: '+err));
+    .catch(err=>{
+      console.log(err);
+      res.status(400).json('Error: '+err);
+    });
     //Here, it never existed, so it creates a new one when you call save()
 });
 //they are not really methods that we are creating. Rather, we are taking the Router

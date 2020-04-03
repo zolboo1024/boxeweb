@@ -2,7 +2,8 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 
 function auth(req,res,next) {
-  const token = req.header('x-auth-token'); //here we are checking for the current token
+  const token = req.header('x-auth-token');
+  //here we are checking for the current token
   //and the saving it in the token variable
   //there is a header called "x-auth-token" in the header of req.
   // Check for token i.e. if the token is valid

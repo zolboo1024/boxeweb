@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {tokenConfig} from '../../actions/authActions';
 import {login} from '../../actions/authActions';
 import {connect} from 'react-redux';
 import store from '../../store';
 import {Alert} from 'reactstrap';
 import {clearErrors} from '../../actions/errorActions';
 import PropTypes from 'prop-types';
-// import DatePicker from 'react-datepicker';
-// import "react-datepicker/dist/react-datepicker.css";
 
 class LoginModal extends Component {
   constructor(props) {

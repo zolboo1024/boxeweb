@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
-
+import {tokenConfigJS} from './tokenConfig';
+import {tokenConfig} from '../actions/authActions';
+import {loadUser} from '../actions/authActions';
+import {connect} from 'react-redux';
+import store from '../store';
 const Space = props => (
   <tr>
     <td>{props.space.username}</td>
@@ -14,7 +17,7 @@ const Space = props => (
   </tr>
 )
 
-export default class SpacesList extends Component {
+class SpacesList extends Component {
   constructor(props) {
     super(props);
 
@@ -22,9 +25,19 @@ export default class SpacesList extends Component {
 
     this.state = {spaces: []};
   }
+  componentDidMount(){
 
-  componentDidMount() {
-    axios.get('http://localhost:3000/spaces/')
+        axios.get('http://localhost:3000/spaces/', tokenConfigJS(this.props.token))
+          .then(response => {
+            this.setState({ spaces: response.data })
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+  }
+  componentDidUpdate() {
+
+    axios.get('http://localhost:3000/spaces/', tokenConfigJS(this.props.token))
       .then(response => {
         this.setState({ spaces: response.data })
       })
@@ -69,3 +82,14 @@ export default class SpacesList extends Component {
     )
   }
 }
+//MApping state to props means that these values are actually attached to the
+//state of this component (REgistermodal).
+const mapStateToProps = state => ({
+  user: state.auth.user,
+  isAuthenticated: state.auth.isAuthenticated,
+  token: state.auth.token
+});
+
+export default connect(
+  mapStateToProps,
+  {loadUser}) (SpacesList);

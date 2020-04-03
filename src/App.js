@@ -10,7 +10,7 @@ import {BrowserRouter as Router, Route} from "react-router-dom";
 import CustomNavbar from "./components/CustomNavbar"
 import SpacesList from "./components/spaces-list.component";
 import EditSpace from "./components/edit-space.component";
-import CreateSpace from "./components/create-space.component";
+import CreateSpace from "./components/CreateSpace";
 import {loadUser} from "./actions/authActions";//
 import {Provider} from 'react-redux';
 import store from './store';
