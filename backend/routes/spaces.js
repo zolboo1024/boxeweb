@@ -5,7 +5,7 @@ const auth = require('../middleware/auth.middleware');
 //got exported from the specified directory or file.
 //Where do we specify if it's a get request or post request?
 //--After the router function call, we say get post or delete
-router.route('/').get(auth,(req,res)=> { //auth is the authorization middleware that we
+router.route('/').get((req,res)=> { //auth is the authorization middleware that we
   //created in the middleware folder. It checks if the user is valid.
   Space.find() //find function is basically connected to the database (it pulls
   //whatever is specified in front of the method call and then finds it

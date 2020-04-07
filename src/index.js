@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
-
 //Basically injecting the component "App" into the 'root' div of the HTML file
 ReactDOM.render(<App />, document.getElementById('root'));
 

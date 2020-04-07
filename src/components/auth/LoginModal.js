@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import {login} from '../../actions/authActions';
 import {connect} from 'react-redux';
 import store from '../../store';
@@ -66,7 +65,7 @@ class LoginModal extends Component {
   //when the errors get cleared, this component gets updated.
   componentDidUpdate(prevProps) {
     const {error} = this.props;
-    if(error != prevProps.error) {
+    if(error !== prevProps.error) {
       //Check for register error
       if(error.id === 'LOGIN_FAIL') {
         this.setState({msg: error.msg});

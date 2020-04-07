@@ -1,18 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import RegisterModal from './auth/RegisterModal';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import store from '../store';
+import {Navbar, NavItem, Icon} from 'react-materialize';
 
-import {
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  Container
-} from 'reactstrap';
 //The Link component is a pre-made component imported as a part of the router package.
 //So you can just specify "to" prop and then make the button.
 
@@ -23,64 +12,49 @@ import {
 //running on different ports.
 //*If there are only one "port"(just a )
 class CustomNavbar extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
-    return (
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">boxE</Link>
-        <div className="collpase navbar-collapse">
-        <ul className="navbar-nav mr-auto">
-          <li className="navbar-item">
-          <Link to="/" className="nav-link">Spaces</Link>
-          </li>
-          {
-          this.props.isAuthenticated?
-          (
-          <li className="navbar-item">
-          <Link to="/create" className="nav-link">Create Space Log</Link>
-          </li>
-          )
-          :
-          null
-          }
-          {
-          this.props.isAuthenticated
-          ?
-          (<li className="navbar-item">
-          <Link to="/logout" className="nav-link">Logout</Link>
-          </li>)
-          :
-          (
-          <li className="navbar-item">
-          <Link to="/register" className="nav-link">Register</Link>
-          </li>
-          )
-          }
-          {
-          this.props.isAuthenticated
-          ?
-          null
-          :
-          (
-          <li className="navbar-item">
-          <Link to="/login" className="nav-link">Login</Link>
-          </li>
-          )
-          }
-        </ul>
-        </div>
-      </nav>
-    );
+    return (<Navbar alignLinks="right" brand={<a className = "brand-logo" href = "/" > boxE</a>} id="mobile-nav" menuIcon={<Icon> menu</Icon>} options={{
+        draggable: true,
+        edge: 'left',
+        inDuration: 250,
+        onCloseEnd: null,
+        onCloseStart: null,
+        onOpenEnd: null,
+        onOpenStart: null,
+        outDuration: 200,
+        preventScrolling: true
+      }}>
+      <NavItem href="/">
+        Spaces
+      </NavItem>
+      {
+        this.props.isAuthenticated
+          ? (<NavItem href="/create">
+            Create Space Log
+          </NavItem>)
+          : null
+      }
+      {
+        this.props.isAuthenticated
+          ? (<NavItem href="/logout">
+            Log out
+          </NavItem>)
+          : (<NavItem href="/register">
+            Register
+          </NavItem>)
+      }
+      {
+        this.props.isAuthenticated
+          ? null
+          : (<NavItem href="/login">
+            Login
+          </NavItem>)
+      }
+    </Navbar>);
   }
 }
 //MApping state to props means that these values are actually attacked to the
 //state of this component (REgistermodal).
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-});
+const mapStateToProps = state => ({isAuthenticated: state.auth.isAuthenticated});
 
-export default connect(
-  mapStateToProps
-) (CustomNavbar);
+export default connect(mapStateToProps)(CustomNavbar);

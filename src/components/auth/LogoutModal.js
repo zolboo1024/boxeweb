@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import {tokenConfig} from '../../actions/authActions';
-import {login} from '../../actions/authActions';
 import {logout} from '../../actions/authActions';
 import {connect} from 'react-redux';
 import store from '../../store';
@@ -33,7 +31,7 @@ class LogoutModal extends Component {
   //when the errors get cleared, this component gets updated.
   componentDidUpdate(prevProps) {
     const {error} = this.props;
-    if(error != prevProps.error) {
+    if(error !== prevProps.error) {
       //Check for register error
       if(error.id === 'LOGOUT_FAIL') {
         this.setState({msg: error.msg});

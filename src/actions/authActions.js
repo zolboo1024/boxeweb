@@ -1,8 +1,6 @@
 import axios from 'axios';
 import {returnErrors} from './errorActions';
 import {clearErrors} from './errorActions';
-import authReducer from '../reducers/authReducer';
-import errorReducer from '../reducers/errorReducer';
 import {
   USER_LOADED,
   USER_LOADING,

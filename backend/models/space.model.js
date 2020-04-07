@@ -5,7 +5,10 @@ const Schema = mongoose.Schema;
 const spaceSchema = new Schema({
   username: {type: String, required: true},
   location: {type: String, required: true},
-  description: {type: String, required: true}
+  description: {type: String, required: true},
+  areaWidth: {type: Number, required: true},
+  areaLength: {type: Number, required: true},
+  price: {type: Number, required: true}
 }, {
   timestamps: true
 });
