@@ -5,24 +5,13 @@ import {loadUser} from '../actions/authActions';
 import {connect} from 'react-redux';
 import 'materialize-css';
 import {Collection, CollectionItem} from 'react-materialize';
-const Space = props => (<CollectionItem className="avatar">
-  <img alt="" className="circle" src="https://materializecss.com/images/yuna.jpg"/>
-  <span className="title">
-    {props.space.description}
-  </span>
-  <p>
-    {props.space.location}
-    <br/>
-    Dimensions and price
-  </p>
-</CollectionItem>)
 
 class SpacesList extends Component {
   constructor(props) {
     super(props);
 
     this.deleteSpace = this.deleteSpace.bind(this)
-
+    this.imageURL = this.imageURL.bind(this)
     this.state = {
       spaces: []
     };
@@ -34,6 +23,12 @@ class SpacesList extends Component {
     }).catch((error) => {
       console.log(error);
     })
+  }
+  componentDidUpdate() {
+    console.log(spaces[0])
+  }
+  imageURL(img) {
+    console.log(img);
   }
   deleteSpace(id) {
     axios.delete('http://localhost:3000/spaces/' + id).then(response => {
@@ -47,7 +42,17 @@ class SpacesList extends Component {
 
   spaceList() {
     return this.state.spaces.map(currentspace => {
-      return <Space space={currentspace} deleteSpace={this.deleteSpace} key={currentspace._id}/>;
+      return <CollectionItem className="avatar">
+        <img alt="" className="circle" src={this.imageURL(currentspace.image)}/>
+        <span className="title">
+          {currentspace.description}
+        </span>
+        <p>
+          {currentspace.location}
+          <br/>
+          Dimensions and price
+        </p>
+      </CollectionItem>;
     })
   }
 

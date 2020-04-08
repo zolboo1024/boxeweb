@@ -3,15 +3,35 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const spaceSchema = new Schema({
-  username: {type: String, required: true},
-  location: {type: String, required: true},
-  description: {type: String, required: true},
-  areaWidth: {type: Number, required: true},
-  areaLength: {type: Number, required: true},
-  price: {type: Number, required: true}
-}, {
-  timestamps: true
-});
+  username: {
+    type: String,
+    required: true
+  },
+  location: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  areawidth: {
+    type: Number,
+    required: true
+  },
+  arealength: {
+    type: Number,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  image: {
+    type: Schema.Types.Mixed,
+    required: true
+  }
+}, {timestamps: true});
 
 const Space = mongoose.model('Space', spaceSchema);
 //mongoose is already connected to our database so this object can

@@ -3,13 +3,14 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const multer = require('multer');
-const ejs = require('ejs');
-const path = require('path');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const Grid = require('gridfs-stream');
 require('dotenv').config(); //configures so that we can have our environment
 //variables in our dotenv files. In this case, this connects with our .env file in the
 //same folder.
 
+//Init app
 const app = express(); //create our express server. Express is a server framework for Node.js
 const port = process.env.PORT || 3000;
 
@@ -18,6 +19,9 @@ app.set('view engine', 'ejs');
 
 //Public folder
 app.use(express.static('./public'));
+
+app.use(bodyParser.json());
+app.use(methodOverride('_method'));
 
 app.use(cors()); // our "middleware".
 app.use(express.json()); //allows us to parse json that our server receives and sends
@@ -31,24 +35,30 @@ mongoose.connect(uri, {
   useCreateIndex: true,
   useUnifiedTopology: true
 });
+
 const connection = mongoose.connection; //save it in a different variable
 //mongoose is how the database is connected to our application.
 connection.on('error', err => {
   console.log("Failed to connect to the database!");
 })
+
 connection.once('open', () => {
+  var gfs = Grid(connection.db, mongoose.mongo);
+  gfs.collection('spaces');
   console.log("MongoDB database has been connected") //log it if it's successful
 });
 
 const spacesRouter = require('./routes/spaces'); //basically import the spaces file.
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
+const uploadRouter = require('./routes/upload');
 //We don't really have a global route variable, we just specify it for each cases. As in this one.
 app.use('/spaces', spacesRouter); //.use function so that the app can use it. Whenever
 //a user goes to the website slash /spaces, it will load everything in the router
 //that is specified. i.e. /routes/spaces.js
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/upload', uploadRouter);
 //nodemon allows us to start a server and it also has hot-reload
 app.listen(port, () => {
   console.log('Server is running on port: ' + port);
