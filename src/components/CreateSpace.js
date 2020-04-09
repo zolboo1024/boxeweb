@@ -66,11 +66,18 @@ class CreateSpace extends Component {
       location: this.state.location,
       areawidth: this.state.areawidth,
       arealength: this.state.arealength,
-      price: this.state.price,
-      image: this.state.image
+      price: this.state.price
     }
-    console.log(thisspace);
-    axios.post('http://localhost:3000/spaces/add', thisspace, tokenConfigJS(this.props.token)).then(res => console.log(res.data));
+    const data = new FormData();
+    //Here we are specifyin what kind of name that the file will be under in this form.
+    data.append('file', this.state.image);
+    data.append('username', thisspace.username);
+    data.append('description', thisspace.description);
+    data.append('location', thisspace.location);
+    data.append('areawidth', thisspace.areawidth);
+    data.append('arealength', thisspace.arealength);
+    data.append('price', thisspace.price);
+    axios.post('http://localhost:3000/spaces/upload', data, tokenConfigJS(this.props.token)).then(res => console.log(res.data));
   }
   render() {
     return (<div>

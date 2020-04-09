@@ -5,11 +5,26 @@ const crypto = require('crypto');
 const ejs = require('ejs');
 const path = require('path');
 const mongoose = require('mongoose');
-const GridFsStorage = require('multer-gridfs-storage');
 const multer = require('multer');
-
+const axios = require('axios');
+//mongoose exists as part of the server so whenever you call it in,
+//it already knows where the database is, for example
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const uri = process.env.ATLAS_URI;
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+});
+const connection = mongoose.connection;
+var gfs;
+connection.once('open', () => {
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection('uploads');
+});
 var storage = new GridFsStorage({
-  url: 'mongodb+srv://dbadmin1:zoloo0429@testboxe-6iuno.mongodb.net/test?retryWrites=true&w=majority',
+  url: uri,
   file: (req, file) => {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
@@ -19,7 +34,7 @@ var storage = new GridFsStorage({
         const filename = buf.toString('hex') + path.extname(file.originalname);
         const fileInfo = {
           filename: filename,
-          bucketName: 'spaces'
+          bucketName: 'uploads'
         };
         resolve(fileInfo);
       });
@@ -27,6 +42,7 @@ var storage = new GridFsStorage({
   }
 });
 const upload = multer({storage});
+//Create a multer instance and set the destination folder.
 //when you say require, it's basically just bringing in Whatever
 //got exported from the specified directory or file.
 //Where do we specify if it's a get request or post request?
@@ -42,34 +58,7 @@ router.route('/').get((req, res) => { //auth is the authorization middleware tha
 //the Space variable is used in 2 ways here. First, as a way to actually create
 //space and then to just straight up connect to the database and then "find"
 //method to be called on it.
-router.route('/add').post(auth, (req, res) => { //we specify whether we are posting or getting
-  //after specifying which route to take.
-  const username = req.body.username;
-  const location = req.body.location;
-  const description = req.body.description;
-  const areawidth = req.body.areawidth;
-  const arealength = req.body.arealength;
-  const price = req.body.price;
-  const image = req.body.image;
-  //if the type is anything other than string, we have to parse them.
-  //add function needs all of the variables in the form of JSON format
-  //req is basically just a JSON object that is specified when the add function is called.
-  const newSpace = new Space({
-    username,
-    location,
-    description,
-    areawidth,
-    arealength,
-    price,
-    image
-  });
 
-  newSpace.save().then(spaces => res.json("Space Saved!")).catch(err => {
-    console.log(err);
-    res.status(400).json('Error: ' + err);
-  });
-  //Here, it never existed, so it creates a new one when you call save()
-});
 //they are not really methods that we are creating. Rather, we are taking the Router
 //object and then modifying it using the router method that is built in and then exporting
 //it so it is saved.
@@ -93,6 +82,38 @@ router.route('/:id').delete(auth, (req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+//Upload.single('file') acts as a middleware, look for a file name "file"
+//in the form and then run the upload function on it. Being middleware also
+//means that it can modify the request before you can access it in the
+//main method
+router.route('/upload').post(auth, upload.single('file'), (req, res) => {
+  //we specify whether we are posting or getting
+  //after specifying which route to take.
+  const imagename = req.file.filename;
+  const username = req.body.username;
+  const location = req.body.location;
+  const description = req.body.description;
+  const areawidth = req.body.areawidth;
+  const arealength = req.body.arealength;
+  const price = req.body.price;
+  //if the type is anything other than string, we have to parse them.
+  //add function needs all of the variables in the form of JSON format
+  //req is basically just a JSON object that is specified when the add function is called.
+  const newSpace = new Space({
+    username,
+    location,
+    description,
+    areawidth,
+    arealength,
+    price,
+    imagename
+  });
+  newSpace.save().then(spaces => res.json("Space saved")).catch(err => {
+    console.log(err);
+    res.status(400).json('Error: ' + err);
+  });
+  //res.redirect('/') ---redirects the user back to the homepage
+});
 router.route('/update/:id').post(auth, (req, res) => {
   Space.findById(req.params.id).then(spaceToUpdate => {
     spaceToUpdate.username = req.body.username;
@@ -104,5 +125,28 @@ router.route('/update/:id').post(auth, (req, res) => {
     //if the save function is called on something that already has
     //the ID, then it just updates it I guess.
   }).catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/images/:imagename').get((req, res) => {
+  //req.params.imagename is how you would get the filename
+  //from the url ('/:imagename') at the end.
+  gfs.files.findOne({
+    filename: req.params.imagename
+  }, (err, file) => {
+    //Check if the file exists
+    if (!file || file.length == 0) {
+      res.status(404).json({err: 'File does not exist'});
+    }
+
+    //Check if the file is images
+    if (file.contentType === "image/jpeg" || file.contentType === "img/png") {
+      //read output to the browser
+      //basically gfs creates a stream and then pipes it out as a response.
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(res);
+    } else {
+      res.status(404).json({err: 'Not an image'});
+    }
+  });
 });
 module.exports = router;

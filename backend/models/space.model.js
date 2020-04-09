@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+//Mongoose Schema acts not only as a way to model the data
+//but also as a way to connect to the database and get
+//the collection with the same name.
 const Schema = mongoose.Schema;
 
 const spaceSchema = new Schema({
@@ -27,9 +30,9 @@ const spaceSchema = new Schema({
     type: Number,
     required: true
   },
-  image: {
-    type: Schema.Types.Mixed,
-    required: true
+  imagename: {
+    type: String,
+    required: false
   }
 }, {timestamps: true});
 

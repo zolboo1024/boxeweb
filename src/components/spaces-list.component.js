@@ -11,7 +11,6 @@ class SpacesList extends Component {
     super(props);
 
     this.deleteSpace = this.deleteSpace.bind(this)
-    this.imageURL = this.imageURL.bind(this)
     this.state = {
       spaces: []
     };
@@ -25,10 +24,7 @@ class SpacesList extends Component {
     })
   }
   componentDidUpdate() {
-    console.log(spaces[0])
-  }
-  imageURL(img) {
-    console.log(img);
+    console.log(this.state.spaces[0])
   }
   deleteSpace(id) {
     axios.delete('http://localhost:3000/spaces/' + id).then(response => {
@@ -39,11 +35,13 @@ class SpacesList extends Component {
       spaces: this.state.spaces.filter(el => el._id !== id)
     })
   }
-
+  //When you go to the spaces/images/:imagename URL, it gets read by the Server
+  //and according to how we set the route, it then pulls the image from the
+  //database. Mongo
   spaceList() {
     return this.state.spaces.map(currentspace => {
       return <CollectionItem className="avatar">
-        <img alt="" className="circle" src={this.imageURL(currentspace.image)}/>
+        <img alt="" className="circle" src={"http://localhost:3000/spaces/images/" + currentspace.imagename}/>
         <span className="title">
           {currentspace.description}
         </span>

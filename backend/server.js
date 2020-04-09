@@ -35,16 +35,14 @@ mongoose.connect(uri, {
   useCreateIndex: true,
   useUnifiedTopology: true
 });
-
 const connection = mongoose.connection; //save it in a different variable
 //mongoose is how the database is connected to our application.
 connection.on('error', err => {
   console.log("Failed to connect to the database!");
 })
-
 connection.once('open', () => {
   var gfs = Grid(connection.db, mongoose.mongo);
-  gfs.collection('spaces');
+  gfs.collection('uploads');
   console.log("MongoDB database has been connected") //log it if it's successful
 });
 
@@ -58,7 +56,10 @@ app.use('/spaces', spacesRouter); //.use function so that the app can use it. Wh
 //that is specified. i.e. /routes/spaces.js
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
-app.use('/upload', uploadRouter);
+//app is basically just a one big server. .use lets you add all the dependencies
+//to run the app.
+//When you call use, it runs the required files and adds them to the routers.
+//app.use('/upload', uploadRouter);
 //nodemon allows us to start a server and it also has hot-reload
 app.listen(port, () => {
   console.log('Server is running on port: ' + port);
