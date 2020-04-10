@@ -6,6 +6,7 @@ export default class SpaceMap extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {}
   static defaultProps = {
     center: {
       lat: 59.95,
@@ -24,7 +25,11 @@ export default class SpaceMap extends Component {
       <GoogleMapReact bootstrapURLKeys={{
           key: 'AIzaSyAsdNhcJt9MW7ChPW-wrSNQmSSMb4d4dS4'
         }} defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
-        <AnyReactComponent lat={59.955413} lng={30.337844} text="My Marker"/>
+        {
+          this.props.coord.map(currentcoord => {
+            return <AnyReactComponent lat={currentcoord[0]} lng={currentcoord[1]} text="price"/>
+          })
+        }
       </GoogleMapReact>
     </div>);
   }

@@ -24,7 +24,7 @@ class App extends Component {
   render() {
     return (<Provider store={store}>
       <Router>
-        <div className="container">
+        <div>
           <CustomNavbar/>
           <br/>
           <Route path="/" exact={false} component={SpacesList}/>
