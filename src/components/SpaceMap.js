@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
 const maps_key = process.env.MY_GMAPS_KEY;
 const AnyReactComponent = ({text}) => <div>{text}</div>;
+
 export default class SpaceMap extends Component {
   constructor(props) {
     super(props);
