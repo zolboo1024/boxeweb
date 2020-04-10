@@ -96,6 +96,8 @@ router.route('/upload').post(auth, upload.single('file'), (req, res) => {
   const areawidth = req.body.areawidth;
   const arealength = req.body.arealength;
   const price = req.body.price;
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
   //if the type is anything other than string, we have to parse them.
   //add function needs all of the variables in the form of JSON format
   //req is basically just a JSON object that is specified when the add function is called.
@@ -106,7 +108,9 @@ router.route('/upload').post(auth, upload.single('file'), (req, res) => {
     areawidth,
     arealength,
     price,
-    imagename
+    imagename,
+    latitude,
+    longitude
   });
   newSpace.save().then(spaces => res.json("Space saved")).catch(err => {
     console.log(err);

@@ -5,7 +5,7 @@ import {loadUser} from '../actions/authActions';
 import {connect} from 'react-redux';
 import 'materialize-css';
 import {Collection, CollectionItem} from 'react-materialize';
-
+import SpaceMap from './SpaceMap';
 class SpacesList extends Component {
   constructor(props) {
     super(props);
@@ -56,10 +56,19 @@ class SpacesList extends Component {
 
   render() {
     return (<div>
-      <h3>Logged Spaces</h3>
-      <Collection>
-        {this.spaceList()}
-      </Collection>
+      <div className="row">
+        <div className="column">
+          <h3>Logged Spaces</h3>
+          <Collection>
+            {this.spaceList()}
+          </Collection>
+        </div>
+        <div className="column">
+          <div className="container" width='500' height='500'>
+            <SpaceMap/>
+          </div>
+        </div>
+      </div>
     </div>)
   }
 }

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Navbar, NavItem, Icon} from 'react-materialize';
-
 //The Link component is a pre-made component imported as a part of the router package.
 //So you can just specify "to" prop and then make the button.
 
@@ -13,7 +12,16 @@ import {Navbar, NavItem, Icon} from 'react-materialize';
 //*If there are only one "port"(just a )
 class CustomNavbar extends Component {
   render() {
-    return (<Navbar alignLinks="right" brand={<a className = "brand-logo" href = "/" > boxE</a>} id="mobile-nav" menuIcon={<Icon> menu</Icon>} options={{
+    const logoStyle = {
+      width: '64',
+      height: 'auto'
+    }
+    const navbarColor = {
+      'backgroundColor': '#bae567'
+    }
+    return (<Navbar alignLinks="right" brand={<a className = "brand-logo"
+      href = "/" > <img alt="the logo" src="http://localhost:3000/spaces/images/ec60965e53975499cb3b6c1388a1113c.jpg" style={logoStyle}/>
+    </a>} id="mobile-nav" menuIcon={<Icon> menu</Icon>} style={navbarColor} options={{
         draggable: true,
         edge: 'left',
         inDuration: 250,

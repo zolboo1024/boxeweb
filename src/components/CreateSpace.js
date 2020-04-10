@@ -4,6 +4,8 @@ import {loadUser} from '../actions/authActions';
 import {connect} from 'react-redux';
 import {tokenConfigJS} from './tokenConfig';
 import {Alert} from 'reactstrap';
+import PlacesAutocomplete from 'react-places-autocomplete';
+import {geocodeByAddress, geocodeByPlaceId, getLatLng} from 'react-places-autocomplete';
 // import DatePicker from 'react-datepicker';
 // import "react-datepicker/dist/react-datepicker.css";
 
@@ -19,6 +21,10 @@ class CreateSpace extends Component {
     this.onChangePrice = this.onChangePrice.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onChangeImage = this.onChangeImage.bind(this);
+    this.onChangeLocation = this.onChangeLocation.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+    this.setLatitude = this.setLatitude.bind(this);
+    this.setLongitude = this.setLongitude.bind(this);
     this.state = {
       username: '',
       description: '',
@@ -28,8 +34,16 @@ class CreateSpace extends Component {
       price: 0,
       msg: '',
       image: null,
-      preview: null
+      preview: null,
+      latitude: 0,
+      longitude: 0
     }
+  }
+  setLatitude(e) {
+    this.setState({latitude: e})
+  }
+  setLongitude(e) {
+    this.setState({longitude: e})
   }
   onChangeUsername(e) {
     this.setState({username: e.target.value})
@@ -47,15 +61,27 @@ class CreateSpace extends Component {
   onChangeDescription(e) {
     this.setState({description: e.target.value})
   }
-
-  onChangeLocation(e) {
-    this.setState({location: e.target.value})
-  }
   onChangeImage(e) {
     this.setState({image: e.target.files[0]});
     this.setState({
       preview: URL.createObjectURL(e.target.files[0])
     });
+  }
+  onChangeLocation = newlocation => {
+    this.setState({location: newlocation});
+  };
+
+  handleSelect = address => {
+    geocodeByAddress(address).then(results => {
+      getLatLng(results[0]).then(latLng => {
+        console.log('Success', latLng);
+        this.setLatitude(latLng.lat);
+        this.setLongitude(latLng.lng);
+      });
+      //results[0].formatted_address contains the address that you can put in one line
+      var formatted_address = results[0].formatted_address;
+      this.onChangeLocation(formatted_address);
+    }).catch(error => console.error('Error', error));
   }
   onSubmit(e) {
     e.preventDefault();
@@ -66,7 +92,9 @@ class CreateSpace extends Component {
       location: this.state.location,
       areawidth: this.state.areawidth,
       arealength: this.state.arealength,
-      price: this.state.price
+      price: this.state.price,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude
     }
     const data = new FormData();
     //Here we are specifyin what kind of name that the file will be under in this form.
@@ -77,6 +105,8 @@ class CreateSpace extends Component {
     data.append('areawidth', thisspace.areawidth);
     data.append('arealength', thisspace.arealength);
     data.append('price', thisspace.price);
+    data.append('latitude', thisspace.latitude);
+    data.append('longitude', thisspace.longitude);
     axios.post('http://localhost:3000/spaces/upload', data, tokenConfigJS(this.props.token)).then(res => console.log(res.data));
   }
   render() {
@@ -87,13 +117,45 @@ class CreateSpace extends Component {
           ? (<Alert color="danger">{this.state.msg}</Alert>)
           : null
       }
-      {/* <form action="http://localhost:3000/spaces/add" method="POST" enctype="multipart/form-data"> */}
       <form onSubmit={this.onSubmit}>
-        <div className="form-group">
-          <label>Location:
-          </label>
-          <input type="text" required="required" className="form-control" value={this.state.location} onChange={this.onChangeLocation}/>
-        </div>
+        <label>Location:
+        </label>
+        <PlacesAutocomplete value={this.state.location} onChange={this.onChangeLocation} onSelect={this.handleSelect}>
+          {
+            ({getInputProps, suggestions, getSuggestionItemProps, loading}) => (<div>
+              <input {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input',
+              })}/>
+              <div className="autocomplete-dropdown-container">
+                {loading && <div>Loading...</div>}
+                {
+                  suggestions.map(suggestion => {
+                    const className = suggestion.active
+                      ? 'suggestion-item--active'
+                      : 'suggestion-item';
+                    // inline style for demonstration purpose
+                    const style = suggestion.active
+                      ? {
+                        backgroundColor: '#fafafa',
+                        cursor: 'pointer'
+                      }
+                      : {
+                        backgroundColor: '#ffffff',
+                        cursor: 'pointer'
+                      };
+                    return (<div {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}>
+                      <span>{suggestion.description}</span>
+                    </div>);
+                  })
+                }
+              </div>
+            </div>)
+          }
+        </PlacesAutocomplete>
         <div className="form-group">
           <label>Description:
           </label>

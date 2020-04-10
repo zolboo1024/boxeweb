@@ -22,7 +22,16 @@
 .App-link {
   color: #61dafb;
 }
-
+body {
+  background-color: #bae567;
+  color: black;
+  padding: 40px;
+  font-family: Arial;
+  text-align: center;
+}
+boxe {
+  background-color: #bae567
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

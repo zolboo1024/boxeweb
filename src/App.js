@@ -11,7 +11,7 @@ import CustomNavbar from "./components/CustomNavbar"
 import SpacesList from "./components/spaces-list.component";
 import EditSpace from "./components/edit-space.component";
 import CreateSpace from "./components/CreateSpace";
-import {loadUser} from "./actions/authActions";//
+import {loadUser} from "./actions/authActions"; //
 import {Provider} from 'react-redux';
 import store from './store';
 import RegisterModal from './components/auth/RegisterModal';
@@ -21,23 +21,21 @@ class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
   }
-  render () {
-    return (
-      <Provider store={store}>
+  render() {
+    return (<Provider store={store}>
       <Router>
         <div className="container">
-        <CustomNavbar />
-        <br/>
-        <Route path="/" exact component={SpacesList} />
-        <Route path="/edit/:id" component={EditSpace} />
-        <Route path="/create" component={CreateSpace} />
-        <Route path="/register" component={RegisterModal} />
-        <Route path="/login" component={LoginModal} />
-        <Route path="/logout" component={LogoutModal} />
+          <CustomNavbar/>
+          <br/>
+          <Route path="/" exact={false} component={SpacesList}/>
+          <Route path="/edit/:id" component={EditSpace}/>
+          <Route path="/create" component={CreateSpace}/>
+          <Route path="/register" component={RegisterModal}/>
+          <Route path="/login" component={LoginModal}/>
+          <Route path="/logout" component={LogoutModal}/>
         </div>
       </Router>
-      </Provider>
-    );
+    </Provider>);
   }
 }
 export default App;
