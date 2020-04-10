@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
-
+const maps_key = process.env.MY_GMAPS_KEY;
 const AnyReactComponent = ({text}) => <div>{text}</div>;
 export default class SpaceMap extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class SpaceMap extends Component {
         width: '100%'
       }}>
       <GoogleMapReact bootstrapURLKeys={{
-          key: 'AIzaSyAsdNhcJt9MW7ChPW-wrSNQmSSMb4d4dS4'
+          key: maps_key
         }} defaultCenter={this.props.center} defaultZoom={this.props.zoom}>
         {
           this.props.coord.map(currentcoord => {
