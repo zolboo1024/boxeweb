@@ -11,9 +11,15 @@ class SpacesList extends Component {
     super(props);
 
     this.deleteSpace = this.deleteSpace.bind(this);
+    this.onMouseExit = this.onMouseExit.bind(this);
+    this.onHoverOver = this.onHoverOver.bind(this);
     this.state = {
       spaces: [],
-      coord: []
+      coord: [],
+      hoveringover: {
+        markerLat: 0,
+        markerLong: 0
+      }
     };
   }
   componentDidMount() {
@@ -24,19 +30,33 @@ class SpacesList extends Component {
       const size = spacecopy.length;
       let coord = new Array(size);
       var i;
+      //here, we save the coordinates in the spaces that
+      //is presented and then save it in our state
+      //to be passed down to the maps component.
       for (i = 0; i < size; i++) {
-        coord[i] = [
-          spacecopy[i].latitude,
-          spacecopy[i].longitude
-        ];
+        coord[i] = {
+          markerLat: spacecopy[i].latitude,
+          markerLong: spacecopy[i].longitude
+        };
       }
       this.setState({coord: coord, spaces: spacecopy});
     }).catch((error) => {
       console.log(error);
     })
   }
+  onHoverOver(id, lat, longi) {
+    this.setState({
+      hoveringover: {
+        markerLat: lat,
+        markerLong: longi
+      }
+    });
+  }
+  onMouseExit() {
+    this.setState({hoveringover: null})
+  }
   componentDidUpdate() {
-    //console.log(this.state.coord);
+    console.log(this.state.hoveringover)
   }
   deleteSpace(id) {
     axios.delete('http://localhost:3000/spaces/' + id).then(response => {
@@ -52,7 +72,9 @@ class SpacesList extends Component {
   //database. Mongo
   spaceList() {
     return this.state.spaces.map(currentspace => {
-      return <CollectionItem className="avatar">
+      return <CollectionItem className="avatar" onMouseEnter={() => {
+          this.onHoverOver(currentspace._id, currentspace.latitude, currentspace.longitude)
+        }} onMouseLeave={this.onMouseExit} key={currentspace._id}>
         <img alt="" className="circle" src={"http://localhost:3000/spaces/images/" + currentspace.imagename}/>
         <span className="title">
           {currentspace.description}
@@ -87,7 +109,7 @@ class SpacesList extends Component {
           </Collection>
         </div>
         <div id="right" style={right}>
-          <SpaceMap key='lmao' coord={this.state.coord}/>
+          <SpaceMap key='lmao' coord={this.state.coord} hoveringover={this.state.hoveringover}/>
         </div>
       </div>
     </div>)

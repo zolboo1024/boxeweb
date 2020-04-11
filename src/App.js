@@ -22,12 +22,17 @@ class App extends Component {
     store.dispatch(loadUser());
   }
   render() {
+    //when setting the path for the route, when you
+    //do the home directory, you have to set the
+    //exact variable to be true. Otherwise,
+    //the thing gets loaded at every page even though it's not
+    //exactly that route
     return (<Provider store={store}>
       <Router>
         <div>
           <CustomNavbar/>
           <br/>
-          <Route path="/" exact={false} component={SpacesList}/>
+          <Route path="/" exact={true} component={SpacesList}/>
           <Route path="/edit/:id" component={EditSpace}/>
           <Route path="/create" component={CreateSpace}/>
           <Route path="/register" component={RegisterModal}/>

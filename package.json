@@ -13,6 +13,7 @@
     "gridfs-stream": "^1.1.1",
     "jquery": "^3.4.1",
     "jsonwebtoken": "^8.5.1",
+    "markers-on-map-react": "^1.2.0",
     "materialize-css": "^1.0.0",
     "method-override": "^3.0.0",
     "multer-gridfs-storage": "^4.0.3",
