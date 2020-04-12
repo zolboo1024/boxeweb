@@ -17,6 +17,7 @@ import store from './store';
 import RegisterModal from './components/auth/RegisterModal';
 import LoginModal from './components/auth/LoginModal';
 import LogoutModal from './components/auth/LogoutModal';
+import DetailedSpace from './components/DetailedSpace';
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/register" component={RegisterModal}/>
           <Route path="/login" component={LoginModal}/>
           <Route path="/logout" component={LogoutModal}/>
+          <Route path="/spaces/:id" component={DetailedSpace}/>
         </div>
       </Router>
     </Provider>);

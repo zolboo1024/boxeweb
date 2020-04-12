@@ -94,7 +94,8 @@ class CreateSpace extends Component {
       arealength: this.state.arealength,
       price: this.state.price,
       latitude: this.state.latitude,
-      longitude: this.state.longitude
+      longitude: this.state.longitude,
+      creatorid: this.props.user._id
     }
     const data = new FormData();
     //Here we are specifyin what kind of name that the file will be under in this form.
@@ -107,7 +108,12 @@ class CreateSpace extends Component {
     data.append('price', thisspace.price);
     data.append('latitude', thisspace.latitude);
     data.append('longitude', thisspace.longitude);
-    axios.post('http://localhost:3000/spaces/upload', data, tokenConfigJS(this.props.token)).then(res => console.log(res.data));
+    data.append('creatorid', thisspace.creatorid);
+    axios.post('http://localhost:3000/spaces/upload', data, tokenConfigJS(this.props.token)).then(res => {
+      if (res.status === 200) {
+        this.props.history.push('/');
+      }
+    });
   }
   render() {
     return (<div>

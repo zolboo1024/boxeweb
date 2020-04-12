@@ -14,7 +14,7 @@ import {
 } from "./types";
 
 // Check token & load user
-export const loadUser = () => (dispatch,getState) => {
+export const loadUser = () => (dispatch, getState) => {
   //User loading
   //Dispatch calls this action. Once it reaches the reducer,
   //it contains nothing in the payload. Just an empty file with a type
@@ -24,79 +24,57 @@ export const loadUser = () => (dispatch,getState) => {
   dispatch(action);
   //Once it gets the user, then it dispatches something that actually
   //contains something.
-  axios.get('http://localhost:3000/login/user/', tokenConfig(getState))
-    .then(res => {
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data
-      });
-    })
-    .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status));
-      dispatch({
-        type: AUTH_ERROR
-      });
-    });
+  axios.get('http://localhost:3000/login/user/', tokenConfig(getState)).then(res => {
+    dispatch({type: USER_LOADED, payload: res.data});
+  }).catch(err => {
+    dispatch(returnErrors(err.response.data, err.response.status));
+    dispatch({type: AUTH_ERROR});
+  });
 };
 //Register a users
-export const register = ({username,email,password}) => (dispatch, getState) => {
+export const register = ({username, email, password}) => (dispatch, getState) => {
   const config = {
     headers: {
-      'Content-Type' : 'application/json'
+      'Content-Type': 'application/json'
     }
   }
   const body = JSON.stringify({username, email, password});
   console.log(body)
-  axios.post('http://localhost:3000/users/', body, config)
-    .then(res=>{
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data
-      });
-      dispatch(clearErrors());
-    }).catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
-      dispatch({
-        type: REGISTER_FAIL
-      });
-    });
+  axios.post('http://localhost:3000/users/', body, config).then(res => {
+    dispatch({type: REGISTER_SUCCESS, payload: res.data});
+    dispatch(clearErrors());
+  }).catch(err => {
+    dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
+    dispatch({type: REGISTER_FAIL});
+  });
 }
 
 //Logs out a user
 export const logout = () => (dispatch, getState) => {
-  try{
-  dispatch({type: LOGOUT_SUCCESS})
-  }
-  catch(err){
-      dispatch(returnErrors('Could not log you out', '', 'LOGOUT_FAIL'));
-      dispatch({
-        type: LOGOUT_FAIL
-      });
+  try {
+    dispatch({type: LOGOUT_SUCCESS})
+  } catch (err) {
+    dispatch(returnErrors('Could not log you out', '', 'LOGOUT_FAIL'));
+    dispatch({type: LOGOUT_FAIL});
   }
 }
 
 //Logs in a user
-export const login = ({email,password}) => (dispatch, getState) => {
+export const login = ({email, password}) => (dispatch, getState) => {
   const config = {
     headers: {
-      'Content-Type' : 'application/json'
+      'Content-Type': 'application/json'
     }
   }
   const body = JSON.stringify({email, password});
   console.log(body)
-  axios.post('http://localhost:3000/login/', body, config)
-    .then(res=>{
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: res.data
-      })
-      dispatch(clearErrors());
-    }).catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
-      dispatch({
-        type: LOGIN_FAIL
-      });
-    });
+  axios.post('http://localhost:3000/login/', body, config).then(res => {
+    dispatch({type: LOGIN_SUCCESS, payload: res.data})
+    dispatch(clearErrors());
+  }).catch(err => {
+    dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
+    dispatch({type: LOGIN_FAIL});
+  });
 }
 //Setup config/headers and token
 export const tokenConfig = getState => {
@@ -111,7 +89,7 @@ export const tokenConfig = getState => {
   }
   //If we find the token, then it takes it and puts it in the
   //config. Config is what is ultimately made into an HTTP request.
-  if(token) {
+  if (token) {
     config.headers['x-auth-token'] = token;
   }
 

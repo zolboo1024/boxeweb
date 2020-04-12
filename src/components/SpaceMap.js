@@ -36,13 +36,16 @@ export default class SpaceMap extends Component {
           labelFontSize: '50px',
           labelFontWeight: '600',
           labelFontFamily: 'Roboto'
-        }
+        },
+        markerDropAnimation: null
       });
       //Select map element(ID or Class)
       MarkersOnMap.Run('div#GoogleMap');
+    } else if (newCenter.markerLat === 0 && newCenter.markerLong === 0) {
+      MarkersOnMap.Remarker(this.props.coord);
     } else {
       var newMarkers = [...this.props.coord];
-      newMarkers.push({markerLat: newCenter.markerLat, markerLong: newCenter.markerLong, markerSize: 60, markerLabelText: 'X'});
+      newMarkers.push({markerLat: newCenter.markerLat, markerLong: newCenter.markerLong, markerSize: 80});
       MarkersOnMap.Remarker(newMarkers);
     }
   }

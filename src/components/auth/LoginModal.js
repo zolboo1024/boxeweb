@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {login} from '../../actions/authActions';
 import {connect} from 'react-redux';
 import store from '../../store';
@@ -23,22 +23,18 @@ class LoginModal extends Component {
 
   componentDidMount() {
     const {isAuthenticated} = this.props;
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       this.props.history.push('/')
     };
     console.log("Component mounted");
   }
 
   onChangeEmail(e) {
-    this.setState({
-      email: e.target.value
-    })
+    this.setState({email: e.target.value})
   }
 
   onChangePassword(e) {
-    this.setState({
-      password: e.target.value
-    })
+    this.setState({password: e.target.value})
   }
 
   onSubmit(e) {
@@ -46,7 +42,7 @@ class LoginModal extends Component {
 
     const thisUser = {
       email: this.state.email,
-      password: this.state.password,
+      password: this.state.password
     }
 
     console.log(thisUser);
@@ -65,61 +61,47 @@ class LoginModal extends Component {
   //when the errors get cleared, this component gets updated.
   componentDidUpdate(prevProps) {
     const {error} = this.props;
-    if(error !== prevProps.error) {
+    if (error !== prevProps.error) {
       //Check for register error
-      if(error.id === 'LOGIN_FAIL') {
+      if (error.id === 'LOGIN_FAIL') {
         this.setState({msg: error.msg});
       } else {
         this.setState({msg: null});
       }
     }
     const {isAuthenticated} = this.props;
-    if(isAuthenticated) {
+    if (isAuthenticated) {
       this.props.history.push('/')
     }
   }
   render() {
-    return (
-    <div>
-      {this.state.msg ? (<Alert color = "danger">{this.state.msg}</Alert>) : null}
+    return (<div>
+      {
+        this.state.msg
+          ? (<Alert color="danger">{this.state.msg}</Alert>)
+          : null
+      }
       <h3>Login</h3>
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
-          <label>Email: </label>
-          <input  type="email"
-              required
-              name="email"
-              className="form-control"
-              value={this.state.email}
-              onChange={this.onChangeEmail}
-              />
+          <label>Email:
+          </label>
+          <input type="email" required="required" name="email" className="form-control" value={this.state.email} onChange={this.onChangeEmail}/>
         </div>
         <div className="form-group">
-          <label>Password: </label>
-          <input
-              type="password"
-              name="password"
-              className="form-control"
-              value={this.state.password}
-              onChange={this.onChangePassword}
-              />
+          <label>Password:
+          </label>
+          <input type="password" name="password" className="form-control" value={this.state.password} onChange={this.onChangePassword}/>
         </div>
         <div className="form-group">
-          <input type="submit" value="Login" className="btn btn-primary" />
+          <input type="submit" value="Login" className="btn btn-primary"/>
         </div>
       </form>
-    </div>
-    )
+    </div>)
   }
 }
 //MApping state to props means that these values are actually attacked to the
 //state of this component (REgistermodal).
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
-});
+const mapStateToProps = state => ({isAuthenticated: state.auth.isAuthenticated, error: state.error});
 
-export default connect(
-  mapStateToProps,
-  {login, clearErrors}
-) (LoginModal);
+export default connect(mapStateToProps, {login, clearErrors})(LoginModal);

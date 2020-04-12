@@ -66,7 +66,11 @@ router.route('/').get((req, res) => { //auth is the authorization middleware tha
 // will be saved as id in the req params
 //This.functionThatReturnsThat().then(that => saveDate()) or something is how then works
 router.route('/:id').get((req, res) => {
-  Space.findById(req.params.id).then(space => res.json(space)) //but if it actually returns something useful,
+  console.log('Made it here')
+  Space.findById(req.params.id).then(space => {
+    res.json(space);
+    console.log(space);
+  }) //but if it actually returns something useful,
   //it can be saved. Especially if it is a GET call, like it is specified here,
   //(we are saying it's a get call by specifying get after the route call) it has to
   //return something.
@@ -98,6 +102,7 @@ router.route('/upload').post(auth, upload.single('file'), (req, res) => {
   const price = req.body.price;
   const latitude = req.body.latitude;
   const longitude = req.body.longitude;
+  const creatorid = req.body.creatorid;
   //if the type is anything other than string, we have to parse them.
   //add function needs all of the variables in the form of JSON format
   //req is basically just a JSON object that is specified when the add function is called.
@@ -110,10 +115,10 @@ router.route('/upload').post(auth, upload.single('file'), (req, res) => {
     price,
     imagename,
     latitude,
-    longitude
+    longitude,
+    creatorid
   });
-  newSpace.save().then(spaces => res.json("Space saved")).catch(err => {
-    console.log(err);
+  newSpace.save().then(spaces => res.status(200).json("Space Saved")).catch(err => {
     res.status(400).json('Error: ' + err);
   });
   //res.redirect('/') ---redirects the user back to the homepage

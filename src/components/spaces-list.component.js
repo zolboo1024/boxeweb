@@ -13,6 +13,7 @@ class SpacesList extends Component {
     this.deleteSpace = this.deleteSpace.bind(this);
     this.onMouseExit = this.onMouseExit.bind(this);
     this.onHoverOver = this.onHoverOver.bind(this);
+    // this.goToUser = this.goToUser.bind(this);
     this.state = {
       spaces: [],
       coord: [],
@@ -53,7 +54,12 @@ class SpacesList extends Component {
     });
   }
   onMouseExit() {
-    this.setState({hoveringover: null})
+    this.setState({
+      hoveringover: {
+        markerLat: 0,
+        markerLong: 0
+      }
+    })
   }
   componentDidUpdate() {
     console.log(this.state.hoveringover)
@@ -65,8 +71,13 @@ class SpacesList extends Component {
 
     this.setState({
       spaces: this.state.spaces.filter(el => el._id !== id)
-    })
+    });
   }
+  // goToUser(userid) {
+  //   axios.get('http://localhost:3000/users/' + userid).then(res => {
+  //     console.log(res.data);
+  //   });
+  // }
   //When you go to the spaces/images/:imagename URL, it gets read by the Server
   //and according to how we set the route, it then pulls the image from the
   //database. Mongo
@@ -98,21 +109,21 @@ class SpacesList extends Component {
       'width': '50%'
     };
     var main = {
-      'overflow': 'hidden'
+      'overflow': 'hidden',
+      'padding': '20'
     };
     return (<div>
       <div id="main" style={main}>
         <div id="left" style={left}>
-          <h3>Logged Spaces</h3>
           <Collection>
             {this.spaceList()}
           </Collection>
         </div>
         <div id="right" style={right}>
-          <SpaceMap key='lmao' coord={this.state.coord} hoveringover={this.state.hoveringover}/>
+          <SpaceMap coord={this.state.coord} hoveringover={this.state.hoveringover}/>
         </div>
       </div>
-    </div>)
+    </div>);
   }
 }
 //MApping state to props means that these values are actually attached to the

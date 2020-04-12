@@ -41,6 +41,10 @@ const spaceSchema = new Schema({
   longitude: {
     type: Number,
     required: true
+  },
+  creatorid: {
+    type: String,
+    required: true
   }
 }, {timestamps: true});
 
