@@ -72,17 +72,17 @@ app.listen(port, () => {
   console.log('Server is running on port: ' + port);
 });
 //in terminal, "nodemon server" to start our server once we're in the same directory
-
-var firebaseConfig = {
-  apiKey: "AIzaSyAsdNhcJt9MW7ChPW-wrSNQmSSMb4d4dS4",
-  authDomain: "genuine-compass-273722.firebaseapp.com",
-  databaseURL: "https://genuine-compass-273722.firebaseio.com",
-  projectId: "genuine-compass-273722",
-  storageBucket: "genuine-compass-273722.appspot.com",
-  messagingSenderId: "387695792869",
-  appId: "1:387695792869:web:2d370993a376c154b37a0c",
-  measurementId: "G-332FTWNFMH"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+//
+// var firebaseConfig = {
+//   apiKey: "AIzaSyAsdNhcJt9MW7ChPW-wrSNQmSSMb4d4dS4",
+//   authDomain: "genuine-compass-273722.firebaseapp.com",
+//   databaseURL: "https://genuine-compass-273722.firebaseio.com",
+//   projectId: "genuine-compass-273722",
+//   storageBucket: "genuine-compass-273722.appspot.com",
+//   messagingSenderId: "387695792869",
+//   appId: "1:387695792869:web:2d370993a376c154b37a0c",
+//   measurementId: "G-332FTWNFMH"
+// };
+//  Initialize Firebase
+// firebase.initializeApp(firebaseConfig);
+// firebase.analytics();
