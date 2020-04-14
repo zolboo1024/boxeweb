@@ -6,6 +6,13 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const Grid = require('gridfs-stream');
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+var firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+require("firebase/firestore");
 require('dotenv').config(); //configures so that we can have our environment
 //variables in our dotenv files. In this case, this connects with our .env file in the
 //same folder.
@@ -64,5 +71,18 @@ app.use('/login', loginRouter);
 app.listen(port, () => {
   console.log('Server is running on port: ' + port);
 });
-
 //in terminal, "nodemon server" to start our server once we're in the same directory
+
+var firebaseConfig = {
+  apiKey: "AIzaSyAsdNhcJt9MW7ChPW-wrSNQmSSMb4d4dS4",
+  authDomain: "genuine-compass-273722.firebaseapp.com",
+  databaseURL: "https://genuine-compass-273722.firebaseio.com",
+  projectId: "genuine-compass-273722",
+  storageBucket: "genuine-compass-273722.appspot.com",
+  messagingSenderId: "387695792869",
+  appId: "1:387695792869:web:2d370993a376c154b37a0c",
+  measurementId: "G-332FTWNFMH"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();

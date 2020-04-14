@@ -4,7 +4,15 @@ import {tokenConfigJS} from './tokenConfig';
 import {loadUser} from '../actions/authActions';
 import {connect} from 'react-redux';
 import 'materialize-css';
-import {Slider, Slide, Caption, MediaBox} from 'react-materialize';
+import {
+  Slider,
+  Slide,
+  Caption,
+  MediaBox,
+  Card,
+  CardTitle,
+  Icon
+} from 'react-materialize';
 
 class DetailedSpace extends Component {
   constructor(props) {
@@ -22,30 +30,30 @@ class DetailedSpace extends Component {
     })
   }
   render() {
+    var main = {
+      'padding': '20'
+    };
+    var image = {
+      'height': '40%',
+      'overflow': 'hidden'
+    }
     return (<div>
-      <Slider fullscreen={false} options={{
-          duration: 500,
-          height: 400,
-          indicators: true,
-          interval: 6000
-        }}>
-        {
-          this.state.space
-            ? (<MediaBox>
-              <img alt="" src={"http://localhost:3000/spaces/images/" + this.state.space.imagename
-}/>
-            </MediaBox>)
-            : null
-        }
-        <Caption placement="center">
-          <h3>
-            This is our big Tagline!
-          </h3>
-          <h5 className="light grey-text text-lighten-3">
-            Here's our small slogan.
-          </h5>
-        </Caption>
-      </Slider>
+      {
+        this.state.space
+          ? (<Card actions={[<a key="1" href="#">Message the host</a>
+              ]} closeIcon={<Icon> close</Icon>} header={<CardTitle image = {
+              "http://localhost:3000/spaces/images/" + this.state.space.imagename
+            }
+            style = {
+              main
+            } > {
+              this.state.space.location
+            }
+            </CardTitle>} revealIcon={<Icon> more_vert</Icon>} style={main}>
+            {this.state.space.description}
+          </Card>)
+          : null
+      }
     </div>)
   }
 }

@@ -9,6 +9,7 @@
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "config": "^3.2.4",
+    "firebase": "^7.14.0",
     "google-map-react": "^1.1.7",
     "gridfs-stream": "^1.1.1",
     "jquery": "^3.4.1",
