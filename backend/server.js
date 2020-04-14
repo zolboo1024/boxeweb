@@ -6,13 +6,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const Grid = require('gridfs-stream');
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
-var firebase = require("firebase/app");
-
-// Add the Firebase products that you want to use
-require("firebase/auth");
-require("firebase/firestore");
 require('dotenv').config(); //configures so that we can have our environment
 //variables in our dotenv files. In this case, this connects with our .env file in the
 //same folder.
@@ -57,12 +50,15 @@ const spacesRouter = require('./routes/spaces'); //basically import the spaces f
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const uploadRouter = require('./routes/upload');
+const chatRouter = require('./routes/chat');
 //We don't really have a global route variable, we just specify it for each cases. As in this one.
 app.use('/spaces', spacesRouter); //.use function so that the app can use it. Whenever
 //a user goes to the website slash /spaces, it will load everything in the router
 //that is specified. i.e. /routes/spaces.js
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/chat', chatRouter);
+
 //app is basically just a one big server. .use lets you add all the dependencies
 //to run the app.
 //When you call use, it runs the required files and adds them to the routers.

@@ -18,6 +18,8 @@ import RegisterModal from './components/auth/RegisterModal';
 import LoginModal from './components/auth/LoginModal';
 import LogoutModal from './components/auth/LogoutModal';
 import DetailedSpace from './components/DetailedSpace';
+import socketIOClient from "socket.io-client";
+import Messenger from "./components/Messenger";
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
@@ -40,6 +42,7 @@ class App extends Component {
           <Route path="/login" component={LoginModal}/>
           <Route path="/logout" component={LogoutModal}/>
           <Route path="/spaces/:id" component={DetailedSpace}/>
+          <Route path="/chat/:id" component={Messenger}/>
         </div>
       </Router>
     </Provider>);
