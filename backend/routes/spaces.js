@@ -7,6 +7,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const axios = require("axios");
+const CircularJSON = require('circular-json');
 //mongoose exists as part of the server so whenever you call it in,
 //it already knows where the database is, for example
 const GridFsStorage = require("multer-gridfs-storage");
@@ -207,10 +208,24 @@ const distance = (lat1, lon1, lat2, lon2, unit) => {
 - res.send all boxes
 - return all boxes on the page.
 */
-router.route("/search").post((req, res) => {
-  Space.find()
+router.route("/search/:input").post((req, res) => {
+const mapkey = process.env.MY_GMAPS_KEY;
+axios.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json", {params: {
+key: mapkey,
+input: req.param.input,
+inputtype: "textquery",
+fields: "geometry"
+}
+}).then((response) => {
+  let json = CircularJSON.stringify(response);
+  res.send(json)
+});
+});
+  /* Space.find()
     .then((spaces) => res.json(spaces))
     .catch((err) => res.status(400).json("Error: " + err));
     
-});
+}); */
+
+
 module.exports = router;
