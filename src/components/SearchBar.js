@@ -13,9 +13,8 @@ input: searchState,
 inputtype: "textquery",
 fields: "geometry"
 }}); */ //better to do this in backend
-const inputLocation = await axios.get(`localhost:3000/spaces/search/${searchState}`);
+axios.get(`localhost:3000/spaces/search/${searchState}`);
 //console.log(inputLocation.data.candidates[0].geometry.location);
-console.log(inputLocation);
 }
 
    return(

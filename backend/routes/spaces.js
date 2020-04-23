@@ -176,11 +176,11 @@ router.route("/images/:imagename").get((req, res) => {
 });
 
 const distance = (lat1, lon1, lat2, lon2, unit) => {
-  var radlat1 = (Math.PI * lat1) / 180;
-  var radlat2 = (Math.PI * lat2) / 180;
-  var theta = lon1 - lon2;
-  var radtheta = (Math.PI * theta) / 180;
-  var dist =
+  let radlat1 = (Math.PI * lat1) / 180
+  let radlat2 = (Math.PI * lat2) / 180;
+  let theta = lon1-lon2;
+  let radtheta = (Math.PI * theta) / 180;
+  let dist =
     Math.sin(radlat1) * Math.sin(radlat2) +
     Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
   if (dist > 1) {
@@ -197,6 +197,7 @@ const distance = (lat1, lon1, lat2, lon2, unit) => {
   }
   return dist;
 };
+
 /*
 - Find all spaces
 - Get input from the search 
@@ -209,16 +210,31 @@ const distance = (lat1, lon1, lat2, lon2, unit) => {
 - return all boxes on the page.
 */
 router.route("/search/:input").post((req, res) => {
+const finalArray = []; //finalArray of spaces to return
 const mapkey = process.env.MY_GMAPS_KEY;
+//getting data from the API about the coordinates of the input
 axios.get("https://maps.googleapis.com/maps/api/place/findplacefromtext/json", {params: {
 key: mapkey,
-input: req.param.input,
+input: req.params.input,
 inputtype: "textquery",
 fields: "geometry"
 }
 }).then((response) => {
-  let json = CircularJSON.stringify(response);
-  res.send(json)
+  let json = CircularJSON.stringify(response.data.candidates[0].geometry.location);
+  
+  Space.find()
+    .then((spaces) => {
+    for (let i = 0; i < spaces.length; i++) {
+      let parsedJson = JSON.parse(json);
+      // if this location is within 0.1KM of the user, add it to the list
+      if (distance(parsedJson.lat, parsedJson.lng, spaces[i].latitude, spaces[i].longitude, "M") <= 100000) {
+         
+        finalArray.push(spaces[i]);
+      }
+  }
+  res.send(finalArray);
+})
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 });
   /* Space.find()
