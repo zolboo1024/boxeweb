@@ -20,6 +20,7 @@ import LogoutModal from './components/auth/LogoutModal';
 import DetailedSpace from './components/DetailedSpace';
 import socketIOClient from "socket.io-client";
 import Messenger from "./components/Messenger";
+import SearchBar from "./components/SearchBar";
 class App extends Component {
   componentDidMount() {
     store.dispatch(loadUser());
@@ -35,6 +36,7 @@ class App extends Component {
         <div>
           <CustomNavbar/>
           <br/>
+          <SearchBar/>
           <Route path="/" exact={true} component={SpacesList}/>
           <Route path="/edit/:id" component={EditSpace}/>
           <Route path="/create" component={CreateSpace}/>
