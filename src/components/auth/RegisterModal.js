@@ -90,11 +90,14 @@ class RegisterModal extends Component {
     }
   }
   render() {
+    var logincss = {
+      'margin': '5%'
+    };
     return (
     <div>
       {this.state.msg ? (<Alert color = "danger">{this.state.msg}</Alert>) : null}
-      <h3>Register</h3>
-      <form onSubmit={this.onSubmit}>
+      <h3 style={{textAlign: "center"}}>Register</h3>
+      <form onSubmit={this.onSubmit} style = {logincss}>
         <div className="form-group">
           <label>Username: </label>
           <input type="text"
@@ -126,7 +129,7 @@ class RegisterModal extends Component {
               onChange={this.onChangePassword}
               />
         </div>
-        <div className="form-group">
+        <div className="form-group" style={{textAlign: "center"}}>
           <input type="submit" value="Register" className="btn btn-primary" />
         </div>
       </form>

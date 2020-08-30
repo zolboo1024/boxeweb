@@ -12,7 +12,7 @@ import {geocodeByAddress, geocodeByPlaceId, getLatLng} from 'react-places-autoco
 class CreateSpace extends Component {
   constructor(props) {
     super(props);
-
+    
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeLocation = this.onChangeLocation.bind(this);

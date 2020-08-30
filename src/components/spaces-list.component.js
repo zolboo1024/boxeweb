@@ -85,8 +85,9 @@ class SpacesList extends Component {
     return this.state.spaces.map(currentspace => {
       return <CollectionItem className="avatar" onMouseEnter={() => {
           this.onHoverOver(currentspace._id, currentspace.latitude, currentspace.longitude)
-        }} onMouseLeave={this.onMouseExit} key={currentspace._id}>
-        <img alt="" className="circle" src={"http://localhost:3000/spaces/images/" + currentspace.imagename}/>
+        }} onMouseLeave={this.onMouseExit} key={currentspace._id} href={'http://localhost:3001/spaces/'+currentspace._id}>
+        <img alt="" className="circle" 
+        src={"http://localhost:3000/spaces/images/" + currentspace.imagename}/>
         <span className="title">
           {currentspace.description}
         </span>

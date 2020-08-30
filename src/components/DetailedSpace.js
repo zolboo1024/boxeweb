@@ -40,7 +40,8 @@ class DetailedSpace extends Component {
     return (<div>
       {
         this.state.space
-          ? (<Card actions={[<a key="1" href={"http://localhost:3001/chat/" + this.state.space.creatorid}>Message the host</a>
+          ? (<Card actions={[<a key="1" href={"http://localhost:3001/chat/" + 
+          this.state.space.creatorid}>Message the host</a>
               ]} closeIcon={<Icon> close</Icon>} header={<CardTitle image = {
               "http://localhost:3000/spaces/images/" + this.state.space.imagename
             }
