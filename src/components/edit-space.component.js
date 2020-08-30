@@ -69,9 +69,12 @@ export default class EditSpace extends Component {
   }
 
   render() {
+    var margincss = {
+      'margin': '100'
+    };
     return (<div>
-      <h3>Edit Exercise Log</h3>
-      <form onSubmit={this.onSubmit}>
+      <h3 style={{textAlign: "center"}}>Edit Exercise Log</h3>
+      <form onSubmit={this.onSubmit} style = {margincss}>
         <div className="form-group">
           <label>Username:
           </label>
@@ -95,7 +98,7 @@ export default class EditSpace extends Component {
           <input type="text" className="form-control" value={this.state.location} onChange={this.onChangeLocation}/>
         </div>
 
-        <div className="form-group">
+        <div className="form-group" style={{textAlign: "center"}}>
           <input type="submit" value="Edit Space Log" className="btn btn-primary"/>
         </div>
       </form>

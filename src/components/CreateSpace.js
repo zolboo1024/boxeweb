@@ -116,14 +116,17 @@ class CreateSpace extends Component {
     });
   }
   render() {
+    var margincss = {
+      'margin': '20'
+    };
     return (<div>
-      <h3>Create New Space</h3>
+      <h3 style={{textAlign: "center"}}>Create New Space</h3>
       {
         this.state.msg
           ? (<Alert color="danger">{this.state.msg}</Alert>)
           : null
       }
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit} style = {margincss}>
         <label>Location:
         </label>
         <PlacesAutocomplete value={this.state.location} onChange={this.onChangeLocation} onSelect={this.handleSelect}>
@@ -191,7 +194,7 @@ class CreateSpace extends Component {
               : null
           }
         </div>
-        <div className="form-group">
+        <div className="form-group" style={{textAlign: "center"}}>
           <input type="submit" value="Create Space Log" className="btn btn-primary"/>
         </div>
       </form>

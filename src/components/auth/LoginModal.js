@@ -76,7 +76,7 @@ class LoginModal extends Component {
   }
   render() {
     var logincss = {
-      'margin': '100'
+      'margin': '20'
     };
     return (<div>
       {
