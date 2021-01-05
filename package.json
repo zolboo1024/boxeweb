@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@vtex/address-form": "^3.8.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-node": "0.0.1-security",
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
